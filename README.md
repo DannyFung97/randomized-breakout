@@ -4,6 +4,8 @@
 
 ### The catch is that every game is different. That includes the ball speed, the brick composition, their colors, and even the paddle's width.
 
+### You may use the arrow keys or the mouse to play.
+
 ### Oh and also, the bricks move from side to side as an added challenge.
 
 ![](/screenshots/b1.png)
