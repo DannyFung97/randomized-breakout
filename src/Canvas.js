@@ -25,10 +25,10 @@ function Canvas() {
   // var brickHeight = 60;
   // var brickPadding = 10;
 
-  var brickRowCount = Math.floor(4 * Math.random()) + 1;
-  var brickColumnCount = Math.floor(10 * Math.random()) + 1;
+  var brickRowCount = Math.floor(4 * Math.random()) + 2;
+  var brickColumnCount = Math.floor(10 * Math.random()) + 4;
   var brickSpace = 1280 / brickColumnCount;
-  var brickWidth = brickSpace * Math.random(30) + 30;
+  var brickWidth = (brickSpace - 20) * Math.random();
   var brickPadding = brickSpace - brickWidth;
   var brickHeight = Math.floor(60 * Math.random()) + 30;
 
@@ -37,7 +37,7 @@ function Canvas() {
   var brickOffsetCap = brickPadding;
 
   var bricks = [];
-  var brickColors = [];
+  var brickColors = ['#f22416', '#f2a516', '#fbff26', '#4ff00a', '#00ff77', '#00e2ed', '#0894ff', '#8095ff', '#723fd1', '#cb2af7', '#ff0dc7'];
   var brickShiftLeft = true;
   var brickSpeed = Math.random() * .5;
 
@@ -94,7 +94,7 @@ function Canvas() {
   function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "#dbdbdb";
     ctx.fill();
     ctx.closePath();
   }
@@ -102,14 +102,14 @@ function Canvas() {
   function drawPaddle() {
     ctx.beginPath();
     ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "#dbdbdb";
     ctx.fill();
     ctx.closePath();
   }
 
   function drawLives() {
     ctx.font = "25px Helvetica";
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "#dbdbdb";
     ctx.fillText("Lives: " + lives, canvas.width - 100, 20);
   }
 
@@ -170,10 +170,10 @@ function Canvas() {
         var b = bricks[c][r];
         if (b.status == 1) {
           if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
-            if(y - ballSpeed <= b.y || y >= b.y + brickHeight - ballSpeed){
+            if (y - ballSpeed <= b.y || y >= b.y + brickHeight - ballSpeed) {
               dy = -dy;
             }
-            else{
+            else {
               dx = -dx;
             }
             b.status = 0;
@@ -190,17 +190,12 @@ function Canvas() {
 
   function drawScore() {
     ctx.font = "25px Helvetica";
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "#dbdbdb";
     ctx.fillText("Score: " + score, 8, 20);
   }
 
   function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+    return brickColors[Math.floor(Math.random() * 11)];
   }
 
   function keyDownHandler(e) {
