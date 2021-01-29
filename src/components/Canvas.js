@@ -67,7 +67,7 @@ const Canvas = ({ data, updateGame }) => {
     // brickRowCount = 2;
     // brickColumnCount = 2;
     brickSpace = canvas.width / brickColumnCount;
-    brickWidth = brickSpace * (Math.random() * .4 + .6);
+    brickWidth = brickSpace * (Math.random() * .5 + .5);
     brickPadding = brickSpace - brickWidth;
     brickHeight = Math.floor(60 * Math.random()) + 30;
     // brickWidth = (4 * brickSpace / 5);
@@ -189,7 +189,7 @@ const Canvas = ({ data, updateGame }) => {
             // console.log('lost a life, lives remaining: ' + lives)
             if (lives === 0) {
               // console.log('lives left: ' + lives)
-              text.innerHTML = "Game Over. Score: " + score;
+              text.innerHTML = "Game Over.";
               modal.style.display = "block";
               document.getElementById('modal-content').classList.add('lose');
               pauseGame = true;
@@ -240,7 +240,7 @@ const Canvas = ({ data, updateGame }) => {
             // console.log('score: ' + score)
             if (score === origScore + (brickRowCount * brickColumnCount)) {
               // console.log(' score: ' + score, '\n origScore: ' + origScore + '\n rows: ' + brickRowCount + '\n cols: ' + brickColumnCount + '\n lives: ' + lives)
-              text.innerHTML = "You win! Score: " + score;
+              text.innerHTML = "Stage Complete! Score: " + score;
               modal.style.display = "block";
               document.getElementById('modal-content').classList.add('win');
               pauseGame = true;
