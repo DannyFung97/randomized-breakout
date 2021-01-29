@@ -18,6 +18,7 @@ canvas {
     overflow: auto;
     background-color: rgb(0,0,0);
     background-color: rgba(0,0,0,0.4);
+    transition: 100ms;
   }
   
 .modal-content {
@@ -32,6 +33,18 @@ canvas {
 
 #text {
     animation: popUp 1s forwards;
+}
+
+.lose {
+  display: block;
+  background-color: red;
+  color: white;
+}
+
+.win {
+  display: block;
+  background-color: green;
+  color: white;
 }
 
 @keyframes popUp {

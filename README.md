@@ -2,7 +2,9 @@
 
 ### This is a game project built based on the Breakout arcade game.
 
-### The catch is that every game is different. That includes the ball speed, the brick composition, their colors, and even the paddle's width.
+### The catch is that every game is different. That includes the ball speed, the brick composition, and even the paddle's width.
+
+### The game keeps track of your lives, current score, and high score throughout your games using Redux.
 
 ### You may use the arrow keys or the mouse to play.
 

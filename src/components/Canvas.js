@@ -6,6 +6,8 @@ import './Canvas.css';
 
 const Canvas = ({ data, updateGame }) => {
 
+  var restarted = false;
+
   var canvas;
   var modal;
   var text;
@@ -35,7 +37,6 @@ const Canvas = ({ data, updateGame }) => {
   var brickOffsetTop;
   var brickOffsetLeft;
   var brickOffsetCap;
-  var brickCount;
 
   var bricks = [];
   var brickColors = ['#f22416', '#f2a516', '#fbff26', '#4ff00a', '#00ff77', '#00e2ed', '#0894ff', '#8095ff', '#723fd1', '#cb2af7', '#ff0dc7'];
@@ -46,12 +47,13 @@ const Canvas = ({ data, updateGame }) => {
   var score = origScore;
   var highScore = data.highScore;
   var lives = data.lives;
-  console.log('how many lives: ' + lives)
+  // console.log('how many lives: ' + lives)
   var won = false;
 
   var autoplay = false;
 
   useEffect(() => {
+    // console.log('setup')
     setup();
   });
 
@@ -60,18 +62,17 @@ const Canvas = ({ data, updateGame }) => {
     canvas = document.getElementById("myCanvas");
     text = document.getElementById("text");
     ctx = canvas.getContext("2d");
-    // brickRowCount = Math.floor(4 * Math.random()) + 2;
-    // brickColumnCount = Math.floor(10 * Math.random()) + 4;
-    brickRowCount = 3;
-    brickColumnCount = 3;
+    brickRowCount = Math.floor(4 * Math.random()) + 2;
+    brickColumnCount = Math.floor(10 * Math.random()) + 4;
+    // brickRowCount = 2;
+    // brickColumnCount = 2;
     brickSpace = canvas.width / brickColumnCount;
-    // brickWidth = brickSpace * Math.random() + 50;
-    // brickPadding = brickSpace - brickWidth;
-    // brickHeight = Math.floor(60 * Math.random()) + 30;
-    brickWidth = (4 * brickSpace / 5);
-    brickHeight = 120;
-    brickPadding = brickSpace / 5;
-    brickCount = brickRowCount * brickColumnCount;
+    brickWidth = brickSpace * (Math.random() * .4 + .6);
+    brickPadding = brickSpace - brickWidth;
+    brickHeight = Math.floor(60 * Math.random()) + 30;
+    // brickWidth = (4 * brickSpace / 5);
+    // brickHeight = 120;
+    // brickPadding = brickSpace / 5;
 
     brickOffsetTop = 30;
     brickOffsetLeft = (canvas.width - (brickColumnCount * brickSpace - brickPadding)) / 2
@@ -81,7 +82,7 @@ const Canvas = ({ data, updateGame }) => {
     y = canvas.height - 30;
     paddleX = (canvas.width - paddleWidth) / 2;
     if (autoplay) {
-      ballSpeed = 10;
+      ballSpeed = 9;
     }
     for (var i = 0; i < brickRowCount; i++) {
       brickColors[i] = getRandomColor();
@@ -92,6 +93,7 @@ const Canvas = ({ data, updateGame }) => {
         bricks[c][r] = { x: 0, y: 0, status: 1 };
       }
     }
+    draw();
   }
 
   function drawBricks() {
@@ -178,16 +180,18 @@ const Canvas = ({ data, updateGame }) => {
         if (y + dy < ballRadius) {
           dy = -dy;
         } else if (y + dy > canvas.height - ballRadius) {
+          // console.log(' ball touched bottom,\n' + paddleX + ' < ' + x + ' < ' + (paddleX + paddleWidth))
           if (x > paddleX && x < paddleX + paddleWidth) {
             dy = -dy;
           }
           else {
             lives--;
-            console.log('lost a life, lives remaining: ' + lives)
+            // console.log('lost a life, lives remaining: ' + lives)
             if (lives === 0) {
-              console.log('lives left: ' + lives)
+              // console.log('lives left: ' + lives)
               text.innerHTML = "Game Over. Score: " + score;
               modal.style.display = "block";
+              document.getElementById('modal-content').classList.add('lose');
               pauseGame = true;
               won = false;
             }
@@ -214,9 +218,9 @@ const Canvas = ({ data, updateGame }) => {
             paddleX = 0;
           }
         }
+        requestAnimationFrame(draw);
       }
     }
-    requestAnimationFrame(draw);
   }
 
   function collisionDetection() {
@@ -233,11 +237,12 @@ const Canvas = ({ data, updateGame }) => {
             }
             b.status = 0;
             score++;
-            console.log('score: ' + score)
+            // console.log('score: ' + score)
             if (score === origScore + (brickRowCount * brickColumnCount)) {
-              console.log(' score: ' + score, '\n origScore: ' + origScore + '\n rows: ' + brickRowCount + '\n cols: ' + brickColumnCount + '\n lives: ' + lives)
+              // console.log(' score: ' + score, '\n origScore: ' + origScore + '\n rows: ' + brickRowCount + '\n cols: ' + brickColumnCount + '\n lives: ' + lives)
               text.innerHTML = "You win! Score: " + score;
               modal.style.display = "block";
+              document.getElementById('modal-content').classList.add('win');
               pauseGame = true;
               won = true
             }
@@ -279,9 +284,18 @@ const Canvas = ({ data, updateGame }) => {
   }
 
   function mouseDownHandler(e) {
-    if (e.target === modal) {
+    if (e.target === modal && !restarted) {
+      restarted = true;
       modal.style.display = "none";
+      let note = document.getElementById('modal-content')
+      if(note.classList.contains('lose')){
+        note.classList.remove('lose');
+      }
+      if(note.classList.contains('win')){
+        note.classList.remove('win');
+      }      
       pauseGame = false;
+      // console.log('restarting')
       if (won) {
         updateGame({ score: score, lives: lives })
       }
@@ -292,8 +306,6 @@ const Canvas = ({ data, updateGame }) => {
     }
   }
 
-  draw();
-
   document.addEventListener("keydown", keyDownHandler, false);
   document.addEventListener("keyup", keyUpHandler, false);
   document.addEventListener("mousemove", mouseMoveHandler, false);
@@ -301,8 +313,8 @@ const Canvas = ({ data, updateGame }) => {
 
   return (
     <div>
-      <div id="myModal" class="modal">
-        <div class="modal-content">
+      <div id="myModal" className="modal">
+        <div id='modal-content' className="modal-content">
           <p id='text' ></p>
         </div>
       </div>
