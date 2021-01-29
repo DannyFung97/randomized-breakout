@@ -14,8 +14,7 @@ const Canvas = ({ data, updateGame }) => {
   var pauseGame = false;
   var ctx;
   var ballRadius = 10;
-  var ballSpeed = 2
-  // 3 * Math.random() * 2 + 2;
+  var ballSpeed = 2.5 * Math.random() * 2 + 2;
   var x;
   var y;
   var dx = 1;
@@ -37,6 +36,7 @@ const Canvas = ({ data, updateGame }) => {
   var brickOffsetTop;
   var brickOffsetLeft;
   var brickOffsetCap;
+  var brickCount;
 
   var bricks = [];
   var brickColors = ['#f22416', '#f2a516', '#fbff26', '#4ff00a', '#00ff77', '#00e2ed', '#0894ff', '#8095ff', '#723fd1', '#cb2af7', '#ff0dc7'];
@@ -47,10 +47,11 @@ const Canvas = ({ data, updateGame }) => {
   var score = origScore;
   var highScore = data.highScore;
   var lives = data.lives;
+  var bricksDestroyed = 0;
   // console.log('how many lives: ' + lives)
   var won = false;
 
-  var autoplay = false;
+  var autoplay = true;
 
   useEffect(() => {
     // console.log('setup')
@@ -62,12 +63,12 @@ const Canvas = ({ data, updateGame }) => {
     canvas = document.getElementById("myCanvas");
     text = document.getElementById("text");
     ctx = canvas.getContext("2d");
-    brickRowCount = Math.floor(4 * Math.random()) + 2;
-    brickColumnCount = Math.floor(10 * Math.random()) + 4;
+    brickRowCount = Math.floor(Math.random() * 4 + 5);
+    brickColumnCount = Math.floor(Math.random() * 6 + 8);
     // brickRowCount = 2;
     // brickColumnCount = 2;
     brickSpace = canvas.width / brickColumnCount;
-    brickWidth = brickSpace * (Math.random() * .5 + .5);
+    brickWidth = brickSpace * (Math.random() * .25 + .75);
     brickPadding = brickSpace - brickWidth;
     brickHeight = Math.floor(60 * Math.random()) + 30;
     // brickWidth = (4 * brickSpace / 5);
@@ -77,12 +78,13 @@ const Canvas = ({ data, updateGame }) => {
     brickOffsetTop = 30;
     brickOffsetLeft = (canvas.width - (brickColumnCount * brickSpace - brickPadding)) / 2
     brickOffsetCap = brickPadding;
+    brickCount = brickRowCount * brickColumnCount;
 
     x = canvas.width / 2;
     y = canvas.height - 30;
     paddleX = (canvas.width - paddleWidth) / 2;
     if (autoplay) {
-      ballSpeed = 9;
+      // ballSpeed = 9;
     }
     for (var i = 0; i < brickRowCount; i++) {
       brickColors[i] = getRandomColor();
@@ -189,7 +191,7 @@ const Canvas = ({ data, updateGame }) => {
             // console.log('lost a life, lives remaining: ' + lives)
             if (lives === 0) {
               // console.log('lives left: ' + lives)
-              text.innerHTML = "Game Over.";
+              text.innerHTML = "Game Over. Score: " + score;
               modal.style.display = "block";
               document.getElementById('modal-content').classList.add('lose');
               pauseGame = true;
@@ -204,8 +206,9 @@ const Canvas = ({ data, updateGame }) => {
             }
           }
         }
-        x += dx * ballSpeed;
-        y += dy * ballSpeed;
+        x += dx * (ballSpeed + ballSpeed * (bricksDestroyed / brickCount));
+        y += dy * (ballSpeed + ballSpeed * (bricksDestroyed / brickCount));
+        // console.log(ballSpeed + ballSpeed * (bricksDestroyed / brickCount));
         if (rightPressed) {
           paddleX += 7;
           if (paddleX + paddleWidth > canvas.width) {
@@ -236,9 +239,9 @@ const Canvas = ({ data, updateGame }) => {
               dx = -dx;
             }
             b.status = 0;
-            score++;
-            // console.log('score: ' + score)
-            if (score === origScore + (brickRowCount * brickColumnCount)) {
+            bricksDestroyed++;
+            score += (brickRowCount - r);
+            if (bricksDestroyed === (brickRowCount * brickColumnCount)) {
               // console.log(' score: ' + score, '\n origScore: ' + origScore + '\n rows: ' + brickRowCount + '\n cols: ' + brickColumnCount + '\n lives: ' + lives)
               text.innerHTML = "Stage Complete! Score: " + score;
               modal.style.display = "block";
@@ -297,10 +300,10 @@ const Canvas = ({ data, updateGame }) => {
       pauseGame = false;
       // console.log('restarting')
       if (won) {
-        updateGame({ score: score, lives: lives })
+        updateGame({ score: score, lives: lives, candidateHighScore: score })
       }
       else {
-        updateGame({ score: 0, lives: 3 })
+        updateGame({ score: 0, lives: 3, candidateHighScore: score })
       }
       // document.location.reload();
     }

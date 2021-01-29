@@ -13,7 +13,7 @@ export const gameData = ( state = initialState, action) => {
             return {
                 ...state,
                 score: data.score,
-                highScore: Math.max(state.highScore, data.score),
+                highScore: Math.max(state.highScore, data.candidateHighScore),
                 lives: data.lives
             }
         }
