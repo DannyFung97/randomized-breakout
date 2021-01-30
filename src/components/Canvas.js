@@ -51,7 +51,7 @@ const Canvas = ({ data, updateGame }) => {
   // console.log('how many lives: ' + lives)
   var won = false;
 
-  var autoplay = true;
+  var autoplay = false;
 
   useEffect(() => {
     // console.log('setup')
