@@ -4,7 +4,7 @@
 
 ### The catch is that every game is different. That includes the ball speed, the brick composition, and even the paddle's width.
 
-### The game keeps track of your lives, current score, and high score throughout your games using Redux. Remember that you must complete the stage if you want your score to be saved as the high score!
+### The game keeps track of your lives, current score, and high score throughout your games using Redux.
 
 ### You may use the arrow keys or the mouse to play.
 
