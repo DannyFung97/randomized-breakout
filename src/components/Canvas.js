@@ -21,7 +21,7 @@ const Canvas = ({ data, updateGame }) => {
   var dy = -1;
 
   var paddleHeight = 10;
-  var paddleWidth = Math.random() * 75 + 75;
+  var paddleWidth = Math.random() * 50 + 100;
   var paddleX;
 
   var rightPressed = false;
@@ -152,19 +152,19 @@ const Canvas = ({ data, updateGame }) => {
 
   function drawLives() {
     ctx.font = "90px monospace";
-    ctx.fillStyle = "#919191";
+    ctx.fillStyle = "#424242";
     ctx.fillText("Lives: " + lives, 8, 700);
   }
 
   function drawScore() {
     ctx.font = "90px monospace";
-    ctx.fillStyle = "#919191";
+    ctx.fillStyle = "#424242";
     ctx.fillText("Score: " + score, 8, 800);
   }
 
   function drawHighScore() {
     ctx.font = "90px monospace";
-    ctx.fillStyle = "#919191";
+    ctx.fillStyle = "#424242";
     ctx.fillText("High Score: " + highScore, 8, 900);
   }
 
