@@ -14,7 +14,7 @@ const Canvas = ({ data, updateGame }) => {
   var pauseGame = false;
   var ctx;
   var ballRadius = 10;
-  var ballSpeed = 2.5 * Math.random() * 2 + 2;
+  var ballSpeed = 1.5 * Math.random() * 2 + 2;
   var x;
   var y;
   var dx = 1;
