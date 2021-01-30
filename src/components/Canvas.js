@@ -14,7 +14,7 @@ const Canvas = ({ data, updateGame }) => {
   var pauseGame = false;
   var ctx;
   var ballRadius = 10;
-  var ballSpeed = 1.5 * Math.random() * 2 + 2;
+  var ballSpeed = 1 * Math.random() * 2 + 2;
   var x;
   var y;
   var dx = 1;
@@ -64,13 +64,16 @@ const Canvas = ({ data, updateGame }) => {
     text = document.getElementById("text");
     ctx = canvas.getContext("2d");
     brickRowCount = Math.floor(Math.random() * 4 + 5);
-    brickColumnCount = Math.floor(Math.random() * 6 + 8);
+    brickColumnCount = Math.floor(Math.random() * 9 + 8);
     // brickRowCount = 2;
     // brickColumnCount = 2;
     brickSpace = canvas.width / brickColumnCount;
-    brickWidth = brickSpace * (Math.random() * .25 + .75);
+    brickWidth = brickSpace * (Math.random() * .25 + .55);
     brickPadding = brickSpace - brickWidth;
-    brickHeight = Math.floor(60 * Math.random()) + 30;
+    brickHeight = (((canvas.height * .5) / brickRowCount) - brickPadding) * (Math.random() * .5 + .5);
+    if(brickHeight < 14){
+      brickHeight = 14
+    }
     // brickWidth = (4 * brickSpace / 5);
     // brickHeight = 120;
     // brickPadding = brickSpace / 5;
@@ -318,7 +321,8 @@ const Canvas = ({ data, updateGame }) => {
     <div>
       <div id="myModal" className="modal">
         <div id='modal-content' className="modal-content">
-          <p id='text' ></p>
+          <p className='text' id='text' ></p>
+          <p className='text' >Click anywhere to continue.</p>
         </div>
       </div>
       <canvas id='myCanvas' width={window.innerWidth} height={window.innerHeight}></canvas>

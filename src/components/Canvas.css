@@ -31,8 +31,8 @@ canvas {
   font-size: 20px;
 }
 
-#text {
-    animation: popUp 1s forwards;
+.text {
+  animation: popUp 1s forwards;
 }
 
 .lose {
