@@ -18,4 +18,4 @@
 
 ![](/screenshots/b4.png)
 
-### If you wish to try this game out, clone this repository, install dependencies via ```npm install``` and then start with ```npm start```.
+### If you wish to try this game out, go to https://dannyfung97.github.io/randomized-breakout/, or clone this repository, install dependencies via ```npm install``` and then start with ```npm start```.
